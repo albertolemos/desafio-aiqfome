@@ -104,8 +104,6 @@ As seguintes rotas requerem autenticação:
 - `POST /users` - Criar novo usuário
 - `POST /auth/login` - Realizar login
 
-### Adicionar e remover produtos favoritos
-
 ### Adicionar ou remover produtos favoritos
 
 Para gerenciar a lista de produtos favoritos de um usuário, envie uma requisição `PUT` para a rota `PUT /users/:id`, incluindo a chave `favorites` no corpo da requisição. O valor deve ser um array de IDs numéricos dos produtos desejados como favoritos.
