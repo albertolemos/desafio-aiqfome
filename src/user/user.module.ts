@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 
 import { UserController } from './controller/user.controller';
 import { UserService } from './service/user.service';
@@ -6,7 +7,7 @@ import { UserRepository } from './repository/user.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Module({
-  imports: [],
+  imports: [HttpModule],
   controllers: [UserController],
   providers: [UserService, UserRepository, PrismaService],
 })
