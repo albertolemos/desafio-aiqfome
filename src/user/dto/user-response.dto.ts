@@ -41,5 +41,10 @@ export class UserResponseDto {
   })
   updatedAt: Date;
 
+  @ApiProperty({
+    description: 'List of favorite products',
+    type: [ProductDto],
+    required: false,
+  })
   favorites?: ProductDto[];
 }
