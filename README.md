@@ -120,8 +120,6 @@ Para gerenciar a lista de produtos favoritos de um usuário, envie uma requisiç
 > **Observação:**  
 > Ao enviar o array `favorites`, ele substituirá a lista atual de favoritos do usuário. Para remover todos os favoritos, envie um array vazio.
 
-````
-
 ## Observações
 
 - O banco de dados roda em container Docker, mas a API roda localmente na sua máquina.
@@ -131,7 +129,7 @@ Para gerenciar a lista de produtos favoritos de um usuário, envie uma requisiç
 
 ```bash
 npx prisma migrate reset
-````
+```
 
 ## Escolha das tecnologias
 
