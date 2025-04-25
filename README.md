@@ -115,6 +115,19 @@ As seguintes rotas requerem autenticação:
 npx prisma migrate reset
 ```
 
+## Escolha das tecnologias
+
+- **Node.JS**: É tecnologia que uso no trabalho e na maioria dos meus projetos pessoais, além de ser a stack que tenho o maior domínio dentre as stacks propostas para este desafio;
+- **NestJS**: Me acompanha também no meu dia-a-dia e que traz uma robustez e organização mesmo em projetos pequenos, como neste desafio, mas que já prepara para o crescimento e evolução;
+
+- **PostgreSQL**: É o banco de dados padrão na maioria dos projetos e que também foi sugerido;
+
+- **Docker**: Facilita a instalação e subida da aplicação, em especial, o banco de dados;
+
+- **Prisma**: Um dos melhores ORMs na minha opinião, que facilita a vida do dev por sua simplicidade na relação com o banco de dados nos projetos Node.JS e TypeScript, robustez em suas consultas fortemente tipadas, o que coopera para uma legibilidade e manutenabilidade do código;
+
+- **Swagger**: Praticidade e legibilidade são as palavras que melhor definem o Swagger para documentação de APIs RESTful.
+
 ---
 
 Desenvolvido por [Alberto](https://github.com/albertolemos) para o desafio Engenheiro(a) de Software SR | APIs e Backoffice | L2L Aiqfome .
