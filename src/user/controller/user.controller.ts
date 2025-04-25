@@ -77,7 +77,7 @@ export class UserController {
     description: 'User not found',
   })
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: Partial<CreateUserDto>) {
+  async update(@Param('id') id: string, @Body() data: CreateUserDto) {
     return this.service.update(+id, data);
   }
 

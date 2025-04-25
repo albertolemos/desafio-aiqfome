@@ -114,7 +114,7 @@ export class UserService {
     return this.repository.findByEmail(email);
   }
 
-  async update(id: number, data: Partial<CreateUserDto>): Promise<void> {
+  async update(id: number, data: CreateUserDto): Promise<void> {
     await this.findById(id);
     const { id: userId } = await this.findByEmail(data.email);
 

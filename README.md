@@ -14,24 +14,15 @@ Este projeto é uma API desenvolvida com [NestJS](https://nestjs.com/) para o de
 
 ```bash
 git clone git@github.com:albertolemos/desafio-aiqfome.git
+```
+
+### 2. Acesse a pasta do projeto
+
+```bash
 cd desafio-aiqfome
 ```
 
-### 2. Suba o banco de dados com Docker Compose
-
-```bash
-docker-compose up -d
-```
-
-Isso irá iniciar um container PostgreSQL configurado conforme o arquivo `docker-compose.yml`.
-
-### 3. Instale as dependências
-
-```bash
-npm install
-```
-
-### 4. Configure as variáveis de ambiente
+### 3. Crie as variáveis de ambiente
 
 Crie um arquivo `.env` na raiz do projeto com as configurações do banco e do JWT. Exemplo:
 
@@ -52,13 +43,27 @@ JWT_SECRET=aiqfome
 JWT_EXPIRES_IN=1d
 ```
 
-### 5. Rode as migrations do Prisma
+### 4. Suba o banco de dados com Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+Isso irá iniciar um container PostgreSQL configurado conforme o arquivo `docker-compose.yml`.
+
+### 5. Instale as dependências
+
+```bash
+npm install
+```
+
+### 6. Rode as migrations do Prisma
 
 ```bash
 npx prisma migrate dev
 ```
 
-### 6. Rode a aplicação localmente
+### 7. Rode a aplicação localmente
 
 ```bash
 npm run start:dev
@@ -66,7 +71,7 @@ npm run start:dev
 
 A API estará disponível em `http://localhost:3000`.
 
-### 7. Documentação da API
+### 8. Documentação da API
 
 Acesse a documentação Swagger em:
 
@@ -112,4 +117,4 @@ npx prisma migrate reset
 
 ---
 
-Desenvolvido para o desafio Engenheiro(a) de Software SR | APIs e Backoffice | L2L Aiqfome .
+Desenvolvido por [Alberto](https://github.com/albertolemos) para o desafio Engenheiro(a) de Software SR | APIs e Backoffice | L2L Aiqfome .
