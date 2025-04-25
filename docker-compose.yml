@@ -13,16 +13,6 @@ services:
       - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # networks:
-    #   - aquinacidade_network
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-# networks:
-#   aquinacidade_network:
 
 volumes:
   postgres_data:
