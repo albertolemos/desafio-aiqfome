@@ -6,108 +6,81 @@ import {
   Injectable,
   Param,
   Post,
-  Patch,
+  Put,
 } from '@nestjs/common';
-
-import { UserService } from '../service/user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiFoundResponse,
   ApiNotFoundResponse,
 } from '@nestjs/swagger';
-import { UpdateUserDto } from '../dto/update-user.dto';
+
+import { UserService } from '../service/user.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UserResponseDto } from '../dto/user-response.dto';
 
 @Injectable()
 @Controller('users')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
-  @Post()
   @ApiCreatedResponse({
     description: 'User created successfully',
-    type: CreateUserDto,
+    type: UserResponseDto,
   })
   @ApiConflictResponse({
     description: 'User with this email already exists',
   })
-  /**
-   * Create a new user
-   * @param data - User data
-   * @returns Created user data
-   */
-  async create(@Body() data: CreateUserDto): Promise<CreateUserDto> {
+  @Post()
+  async create(@Body() data: CreateUserDto) {
     return this.service.create(data);
   }
 
   @ApiFoundResponse({
     description: 'User found successfully',
-    type: [CreateUserDto],
+    type: [UserResponseDto],
   })
   @ApiNotFoundResponse({
     description: 'Users not found',
   })
-  /**
-   * Get all users
-   * @returns Array of user data
-   */
   @Get()
-  async findAll(): Promise<Array<CreateUserDto>> {
+  async findAll() {
     return this.service.findAll();
   }
 
   @ApiFoundResponse({
     description: 'User found successfully',
-    type: CreateUserDto,
+    type: UserResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'User not found',
   })
-  /**
-   * Get user by ID
-   * @param id - User ID
-   * @returns User data
-   */
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreateUserDto> {
+  async findOne(@Param('id') id: string) {
     return this.service.findById(+id);
   }
 
   @ApiFoundResponse({
     description: 'User found successfully',
-    type: CreateUserDto,
+    type: UserResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'User not found',
   })
-  /**
-   * Get user by id
-   * @param id - User id
-   * @returns User data
-   */
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() data: UpdateUserDto,
-  ): Promise<void> {
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() data: CreateUserDto) {
     return this.service.update(+id, data);
   }
 
   @ApiFoundResponse({
     description: 'User found successfully',
-    type: CreateUserDto,
+    type: UserResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'User not found',
   })
-  /**
-   * Delete user by id
-   * @param id - User id
-   * @returns void
-   */
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: string) {
     return this.service.delete(+id);
   }
 }

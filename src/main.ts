@@ -20,9 +20,15 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('aiqfome')
+    .addSecurity('bearer', {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    })
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   app.useGlobalPipes(new ValidationPipe());
 
