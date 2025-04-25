@@ -104,6 +104,26 @@ As seguintes rotas requerem autenticação:
 - `POST /users` - Criar novo usuário
 - `POST /auth/login` - Realizar login
 
+### Adicionar e remover produtos favoritos
+
+### Adicionar ou remover produtos favoritos
+
+Para gerenciar a lista de produtos favoritos de um usuário, envie uma requisição `PUT` para a rota `PUT /users/:id`, incluindo a chave `favorites` no corpo da requisição. O valor deve ser um array de IDs numéricos dos produtos desejados como favoritos.
+
+**Exemplo de payload:**
+
+```json
+{
+  // demais campos do usuário
+  "favorites": [1, 2, 3, 5, 8, 13]
+}
+```
+
+> **Observação:**  
+> Ao enviar o array `favorites`, ele substituirá a lista atual de favoritos do usuário. Para remover todos os favoritos, envie um array vazio.
+
+````
+
 ## Observações
 
 - O banco de dados roda em container Docker, mas a API roda localmente na sua máquina.
@@ -113,7 +133,7 @@ As seguintes rotas requerem autenticação:
 
 ```bash
 npx prisma migrate reset
-```
+````
 
 ## Escolha das tecnologias
 
