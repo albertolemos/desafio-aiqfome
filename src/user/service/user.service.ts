@@ -13,6 +13,8 @@ import { UserRepository } from '../repository/user.repository';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { ProductDto } from '../dto/product.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
+import { AuthService } from '../../auth/auth.service';
+import { UserResponseMapper } from '../mapper/user-response.mapper';
 
 @Injectable()
 export class UserService {
@@ -22,25 +24,30 @@ export class UserService {
   constructor(
     private readonly repository: UserRepository,
     private readonly httpService: HttpService,
+    private readonly authService: AuthService,
   ) {}
 
-  async create(data: CreateUserDto): Promise<User | null> {
+  async create(data: CreateUserDto): Promise<UserResponseDto | null> {
     this.logger.log(`Creating user with data: ${JSON.stringify(data)}`);
 
-    const { email } = data;
+    const { email, password } = data;
     const user: User = await this.findByEmail(email);
     if (user) {
       this.logger.error(`User with email ${email} already exists`);
       throw new ConflictException(`User with this email already exists`);
     }
 
-    const newUser: User = await this.repository.create(data);
+    const hashedPassword = await this.authService.hashPassword(password);
+    const newUser: User = await this.repository.create({
+      ...data,
+      password: hashedPassword,
+    });
 
     this.logger.log(
       `User created successfully. New user: ${JSON.stringify(newUser)}`,
     );
 
-    return newUser;
+    return UserResponseMapper.toResponse(newUser);
   }
 
   async findAll(): Promise<UserResponseDto[] | null> {
@@ -54,13 +61,16 @@ export class UserService {
 
     const products: ProductDto[] = await this.fetchProduct();
 
-    const usersWithFavorites = allUsers.map((user) => ({
-      ...user,
-      favorites: this.filteredFavoritesProducts(products, user.favorites),
-    }));
+    const usersWithFavorites: UserResponseDto[] = allUsers.map((user) => {
+      const favorites = this.filteredFavoritesProducts(
+        products,
+        user.favorites,
+      );
+      return UserResponseMapper.toResponse(user, favorites);
+    });
 
     this.logger.log(
-      `Users with favorites: ${JSON.stringify(usersWithFavorites)}`,
+      `Users with favorites found: ${JSON.stringify(usersWithFavorites)}`,
     );
 
     return usersWithFavorites;
@@ -79,7 +89,10 @@ export class UserService {
 
     const products: ProductDto[] = await this.fetchProduct();
     const favorites = this.filteredFavoritesProducts(products, user.favorites);
-    const userWithFavorites: UserResponseDto = { ...user, favorites };
+    const userWithFavorites: UserResponseDto = UserResponseMapper.toResponse(
+      user,
+      favorites,
+    );
 
     this.logger.log(
       `User with id ${id} found: ${JSON.stringify(userWithFavorites)}`,
@@ -101,13 +114,18 @@ export class UserService {
     return this.repository.findByEmail(email);
   }
 
-  async update(id: number, data: CreateUserDto): Promise<void> {
+  async update(id: number, data: Partial<CreateUserDto>): Promise<void> {
     await this.findById(id);
     const { id: userId } = await this.findByEmail(data.email);
 
     if (userId !== id) {
       this.logger.error(`User with email ${data.email} already exists`);
       throw new ConflictException(`User with this email already exists`);
+    }
+
+    if (data.password) {
+      const hashedPassword = await this.authService.hashPassword(data.password);
+      data.password = hashedPassword;
     }
 
     this.logger.log(

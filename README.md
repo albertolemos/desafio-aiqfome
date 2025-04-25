@@ -13,7 +13,7 @@ Este projeto é uma API desenvolvida com [NestJS](https://nestjs.com/) para o de
 ### 1. Clone o repositório
 
 ```bash
-git clone <git@github.com:albertolemos/desafio-aiqfome.git>
+git clone git@github.com:albertolemos/desafio-aiqfome.git
 cd desafio-aiqfome
 ```
 
@@ -33,21 +33,24 @@ npm install
 
 ### 4. Configure as variáveis de ambiente
 
-Crie um arquivo `.env` na raiz do projeto com as configurações do banco. Exemplo:
+Crie um arquivo `.env` na raiz do projeto com as configurações do banco e do JWT. Exemplo:
 
 ```
 NODE_ENV=dev
 PORT=3000
 
+# Configurações do Banco de Dados
 POSTGRES_DB=aiqfome
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=admin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/aiqfome
-```
+DATABASE_URL=postgresql://admin:admin@localhost:5432/aiqfome
 
-Ajuste conforme necessário.
+# Configuração do JWT
+JWT_SECRET=aiqfome
+JWT_EXPIRES_IN=1d
+```
 
 ### 5. Rode as migrations do Prisma
 
@@ -71,10 +74,36 @@ Acesse a documentação Swagger em:
 http://localhost:3000/docs
 ```
 
+## Autenticação e Autorização
+
+A API utiliza autenticação JWT (JSON Web Token) para proteger as rotas. Para acessar as rotas protegidas:
+
+1. Primeiro, crie um usuário através da rota `POST /users`
+2. Faça login usando a rota `POST /auth/login` com suas credenciais
+3. Use o token JWT retornado no header `Authorization` das requisições:
+   ```
+   Authorization: Bearer <seu_token_jwt>
+   ```
+
+### Rotas Protegidas
+
+As seguintes rotas requerem autenticação:
+
+- `GET /users` - Listar todos os usuários
+- `GET /users/:id` - Buscar usuário por ID
+- `PUT /users/:id` - Atualizar usuário
+- `DELETE /users/:id` - Deletar usuário
+
+### Rotas Públicas
+
+- `POST /users` - Criar novo usuário
+- `POST /auth/login` - Realizar login
+
 ## Observações
 
 - O banco de dados roda em container Docker, mas a API roda localmente na sua máquina.
 - Certifique-se de que a porta 5432 está livre para o PostgreSQL.
+- O token JWT expira em 1 dia após sua emissão.
 - Para resetar o banco, use:
 
 ```bash

@@ -7,17 +7,20 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiFoundResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 import { UserService } from '../service/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
+import { JwtGuard } from '../../auth/guard/jwt.guard';
 
 @Injectable()
 @Controller('users')
@@ -36,6 +39,8 @@ export class UserController {
     return this.service.create(data);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @ApiFoundResponse({
     description: 'User found successfully',
     type: [UserResponseDto],
@@ -48,6 +53,8 @@ export class UserController {
     return this.service.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @ApiFoundResponse({
     description: 'User found successfully',
     type: UserResponseDto,
@@ -60,6 +67,8 @@ export class UserController {
     return this.service.findById(+id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @ApiFoundResponse({
     description: 'User found successfully',
     type: UserResponseDto,
@@ -68,10 +77,12 @@ export class UserController {
     description: 'User not found',
   })
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: CreateUserDto) {
+  async update(@Param('id') id: string, @Body() data: Partial<CreateUserDto>) {
     return this.service.update(+id, data);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @ApiFoundResponse({
     description: 'User found successfully',
     type: UserResponseDto,
